@@ -2,6 +2,24 @@
 
 All notable user-facing changes to FlipDesk are documented here.
 
+## [0.1.1]
+
+Maintenance release focused on reliable global input after Windows sign-in.
+
+### Fixed
+
+- Fixed Ctrl+Alt+mouse-wheel page navigation when another elevated application owns the foreground immediately after sign-in.
+- Fixed the Ctrl+Alt+Shift help overlay and Ctrl+Alt+middle-click Desktop jump in the same elevated-foreground scenario.
+- FlipDesk now fails clearly at startup instead of silently running with incomplete global controls when its required input component is unavailable.
+- FlipDesk now also reports and closes if the required input component stops unexpectedly while FlipDesk is running.
+
+### Changed
+
+- Added a required elevated InputBroker for global keyboard/modifier and mouse input while the main FlipDesk process remains non-elevated.
+- The installer now uses a protected Program Files installation and configures the InputBroker to start at logon with highest privileges.
+- Upgrading from the per-user 0.1.0 installation migrates to the protected installation while preserving FlipDesk user data.
+- Release packaging now includes both `FlipDesk.exe` and `FlipDesk.InputBroker.exe` inside the installer build.
+
 ## [0.1.0]
 
 Initial public release of FlipDesk for Windows 11 x64.
