@@ -2,6 +2,23 @@
 
 All notable user-facing changes to FlipDesk are documented here.
 
+## [0.1.2]
+
+Maintenance release simplifying FlipDesk global input and startup architecture.
+
+### Fixed
+
+- Fixed Ctrl+Alt+mouse-wheel page navigation, Ctrl+Alt+Shift help, and Ctrl+Alt+middle-click Desktop navigation when an elevated application owns the foreground.
+
+### Changed
+
+- FlipDesk now runs elevated in production instead of relying on a separate elevated InputBroker.
+- Removed the InputBroker process, executable, IPC bridge, startup gate, runtime-loss monitoring, and broker scheduled task from the production architecture.
+- Start with Windows now uses a per-user scheduled task with interactive logon and highest privileges so elevated FlipDesk can start without a UAC prompt at sign-in.
+- Debug builds remain non-elevated and keep their separate development autostart behavior.
+- Release packaging is simplified to a single `FlipDesk.exe`.
+- The installer removes obsolete InputBroker components from previous installations while preserving FlipDesk user data and the previous autostart preference.
+
 ## [0.1.1]
 
 Maintenance release focused on reliable global input after Windows sign-in.
