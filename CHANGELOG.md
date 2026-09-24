@@ -2,6 +2,26 @@
 
 All notable user-facing changes to FlipDesk are documented here.
 
+## [0.1.3]
+
+Maintenance release focused on smoother navigation, cleaner reference indicators, and easier transfer from Explorer.
+
+### Added
+
+- Added Ctrl+Alt+S support for sending selected files and folders from the active File Explorer window to a chosen virtual page as references, without moving or copying the original objects.
+- Added a Settings option to invert Ctrl+Alt+mouse-wheel page navigation. The change applies immediately, is saved between launches, and updates the Ctrl+Alt+Shift help overlay.
+
+### Fixed
+
+- Fixed the brief white flash behind native Desktop icon labels that could appear when FlipDesk attached after Explorer startup.
+- Broken Windows shortcuts now keep the native shortcut arrow and show a red X indicator when their target is missing.
+
+### Changed
+
+- Returning to the native Desktop from distant virtual pages now uses one continuous filmstrip-style animation with smooth global easing instead of visibly stepping through intermediate pages.
+- Ordinary external references now use a smaller Windows-style two-page badge.
+- Healthy `.lnk`, `.url`, and `.appref-ms` items keep their native Shell overlay without an additional FlipDesk reference badge.
+
 ## [0.1.2]
 
 Maintenance release simplifying FlipDesk global input and startup architecture.
