@@ -27,7 +27,7 @@ FlipDesk provides:
 - settings, tray icon and optional autostart;
 - light and dark themes;
 - Russian and English interface;
-- state and full backup support;
+- separate State V2 and Full V2 backup histories;
 - guarded restore and recovery flows;
 - single-instance activation.
 
@@ -74,49 +74,40 @@ Release data is stored separately from the installed program:
 
 - settings and application state: `%LOCALAPPDATA%\FlipDesk\`;
 - FlipDesk-owned page files: `%USERPROFILE%\FlipDesk\Pages\`;
-- state/full backups: under FlipDesk backup storage or a user-selected backup location.
+- State V2 snapshots: `%LOCALAPPDATA%\FlipDesk\Backups\V2\State\`;
+- Full V2 snapshots: by default, `%LOCALAPPDATA%\FlipDesk\Backups\V2\Full\`. A user-selected Full backup location uses a separate V2 store.
 
-On first launch, FlipDesk automatically creates an initial full backup of the user's Windows Desktop and the Public Desktop. This backup serves as a recovery point in case the user later decides to remove FlipDesk after moving items to virtual pages, or needs to restore the original desktop state. The size of the first backup depends on the amount of data stored on the desktops and may be significant.
+When daily Full V2 backups are enabled, FlipDesk creates a daily snapshot when due (no more than one per day). An initial snapshot can be large, depending on the desktop files included. State V2 snapshots are maintained separately and can also be saved manually.
 
-Uninstalling FlipDesk is designed to remove the application itself, **not** your pages, settings or backups. The initial backup therefore remains on disk and can be used for later recovery, including after reinstalling FlipDesk.
+Uninstalling FlipDesk is designed to remove the application itself, **not** your page files, settings or backup data. V2 does **not** automatically migrate, restore or delete older V1 backup archives.
 
 <details>
-<summary><h3>Backup and recovery</h3></summary>
+<summary><h3>Backup and recovery (0.1.4 / V2)</h3></summary>
 
-FlipDesk uses two separate backup layers:
+Open **Settings → Backup Center**. There are two separate histories:
 
-| Backup type | What it protects | When to use it |
+| Backup | Includes | Best for |
 | --- | --- | --- |
-| **FlipDesk restore point** | FlipDesk settings, page list/order, and virtual-page layout/references. **Real user files are not included.** | When you need to roll back FlipDesk settings or page structure without restoring files. |
-| **Full file backup** | Copyable real files covered by the backup plan, plus FlipDesk state. System-managed paths can be stored as references only. | When you need to recover real files, or restore files and FlipDesk state together. |
+| **FlipDesk settings (State V2)** | Page list/order, virtual-page layout/references and application settings; **not** the contents of Windows documents. | Rolling back FlipDesk settings without changing original files. |
+| **Desktop files and settings (Full V2)** | Copyable files within the backup plan (including Desktop content), together with the same FlipDesk state. Some external references are recorded as metadata only. | Recovering documents or returning both supported files and FlipDesk settings to an earlier snapshot. |
 
-**FlipDesk restore points**
+**State V2 — FlipDesk settings**
 
-- Restore points are small and are created automatically around FlipDesk state changes.
-- Up to **20** restore points are retained.
-- **Restore state** restores FlipDesk settings/page state only; it does not restore real user files.
-- Applying a restore point uses the guarded restore flow and restarts FlipDesk.
+- Use **Back up now**, select a saved snapshot, then **Restore** or **Delete copy**. Deletion affects only the selected State V2 snapshot.
+- State snapshots can also be created automatically when the application state changes. There is no requirement to type a technical snapshot ID.
+- Restoring a selected State V2 snapshot requires confirmation and a FlipDesk restart. It **does not overwrite Windows user files**.
 
-**Full backups**
+**Full V2 — desktop files and settings**
 
-- **Daily full backup** runs on the first FlipDesk launch of the day when enabled.
-- FlipDesk keeps the latest **7 daily** full snapshots.
-- **Manual** backups and **safety** snapshots are not removed by the daily retention cycle.
-- **Create backup** creates a full snapshot manually.
-- Full-backup storage is content-addressed: unchanged files are not duplicated, so later snapshots add only new or changed data.
+- **Back up now** saves a manual snapshot. The lock symbol identifies a manual copy **protected from automatic daily cleanup**; it can still be deleted manually after confirmation.
+- When enabled, a daily Full V2 snapshot is created when due. Automatic retention keeps the newest **7 daily copies**. **Clean up storage…** removes excess daily copies, never manual ones; unreferenced stored file data is reclaimed.
+- **Restore** first verifies the snapshot and previews counts of files to replace, missing files to return, unchanged files, and files/directories excluded for safety. Nothing is changed before the final confirmation.
+- Confirmed **Restore** returns eligible files to their **original paths** and applies the saved FlipDesk state after restart. Files that exist now but were not in the snapshot are **not deleted**. Existing files being replaced are retained for transaction rollback if recovery fails.
+- Automatic restore is limited to permitted paths within the user's profile. **Public Desktop** items and other restricted locations may be backed up but are **skipped during automatic restore**, with a warning in the preview.
+- **Extract to folder…** copies the selected Full V2 snapshot to a **new separate folder**, including its files, three State JSON files and an `original-paths.json` map. It verifies copied data and does not overwrite the live Desktop. Use this method to retrieve individual files or skipped Public Desktop items manually.
+- There is **no separate “Files only” whole-snapshot restore mode** or direct single-file restore action in the V2 backup history. For individual-file recovery, extract the backup first.
 
-**Restoring from a full backup**
-
-The full-backup history can restore an individual missing file, resolve a changed-file conflict, or restore an entire snapshot.
-
-For a whole-snapshot restore:
-
-- **Files only** restores the snapshot's files but leaves the current FlipDesk settings and page state unchanged.
-- **Files + state** restores the files and the FlipDesk state stored in the same snapshot, then restarts FlipDesk.
-- Extra current files that are not present in the selected snapshot are **not deleted**.
-- Before a whole-snapshot restore changes anything, FlipDesk automatically creates a new full **safety snapshot** of the current files.
-
-> **Quick guide:** use a **restore point** for FlipDesk settings/pages, a **full backup** for real files, and **Files + state** when you want both files and FlipDesk returned to the same earlier point.
+**Important limitations:** Native Windows Explorer Desktop icon positions are **not restored** by State V2 or Full V2. Older V1 backups remain untouched and cannot be restored through the V2 interface.
 
 </details>
 
@@ -185,7 +176,7 @@ FlipDesk предоставляет:
 - настройки, значок в системном трее и опциональный автозапуск;
 - светлую и тёмную темы;
 - русский и английский интерфейс;
-- state/full backup;
+- отдельные истории резервных копий State V2 и Full V2;
 - защищённые сценарии восстановления;
 - single-instance activation.
 
@@ -232,49 +223,40 @@ FlipDesk **не** заменяет настоящий рабочий стол Wi
 
 - настройки и состояние приложения: `%LOCALAPPDATA%\FlipDesk\`;
 - файлы страниц, принадлежащие FlipDesk: `%USERPROFILE%\FlipDesk\Pages\`;
-- state/full backups: во внутреннем хранилище резервных копий FlipDesk или в папке, выбранной пользователем.
+- копии State V2: `%LOCALAPPDATA%\FlipDesk\Backups\V2\State\`;
+- копии Full V2: по умолчанию `%LOCALAPPDATA%\FlipDesk\Backups\V2\Full\`. Для выбранного пользователем места хранения применяется отдельное V2-хранилище.
 
-При первом запуске FlipDesk автоматически создаёт исходную полную резервную копию пользовательского рабочего стола Windows и общего Public Desktop. Эта копия служит точкой восстановления на случай, если после переноса объектов на виртуальные страницы пользователь решит отказаться от FlipDesk или потребуется вернуть исходное состояние рабочего стола. Размер первой резервной копии зависит от объёма данных на рабочих столах и может быть значительным.
+Если ежедневное копирование Full V2 включено, FlipDesk создаёт копию при наступлении очередного дня (не более одной за день). Первая копия может занимать значительный объём — в зависимости от файлов рабочего стола. Копии настроек State V2 хранятся отдельно, их также можно создавать вручную.
 
-Удаление FlipDesk рассчитано на удаление самого приложения, **но не** страниц пользователя, настроек и резервных копий. Поэтому исходный backup остаётся на диске и может быть использован для последующего восстановления, в том числе после повторной установки FlipDesk.
+При удалении FlipDesk должны сохраняться **файлы страниц, настройки и резервные копии**. Старые архивы V1 новая система V2 автоматически не переносит, не восстанавливает и не удаляет.
 
 <details>
-<summary><h3>Резервное копирование и восстановление</h3></summary>
+<summary><h3>Резервное копирование и восстановление (0.1.4 / V2)</h3></summary>
 
-FlipDesk использует два отдельных уровня защиты:
+Открой **«Настройки» → «Резервное копирование»**. В программе две отдельные истории:
 
-| Тип резервной копии | Что защищает | Когда использовать |
+| Тип копии | Что сохраняется | Когда использовать |
 | --- | --- | --- |
-| **Точка восстановления FlipDesk** | Настройки FlipDesk, список и порядок страниц, раскладку и ссылки на виртуальных страницах. **Реальные пользовательские файлы в неё не входят.** | Когда нужно вернуть настройки или структуру страниц FlipDesk, не восстанавливая файлы. |
-| **Полная резервная копия файлов** | Реальные копируемые файлы, входящие в план резервного копирования, а также состояние FlipDesk. Для системных путей может сохраняться только ссылка. | Когда нужно вернуть реальные файлы либо одновременно восстановить файлы и состояние FlipDesk. |
+| **Настройки FlipDesk (State V2)** | Список и порядок страниц, раскладка и ссылки на виртуальных страницах, настройки программы. **Содержимое документов Windows не копируется.** | Вернуть прежние настройки FlipDesk без изменения оригинальных файлов. |
+| **Файлы рабочих столов и настройки (Full V2)** | Копируемые файлы из плана резервирования (включая файлы рабочего стола) и состояние FlipDesk. Некоторые внешние ссылки сохраняются только как сведения о путях. | Получить файлы или восстановить разрешённые файлы вместе с настройками программы. |
 
-**Точки восстановления FlipDesk**
+**State V2 — настройки FlipDesk**
 
-- Это небольшие точки, которые автоматически создаются при изменениях состояния FlipDesk.
-- Хранятся до **20** последних точек восстановления.
-- **Восстановить состояние** возвращает только настройки и состояние страниц FlipDesk; реальные пользовательские файлы при этом не восстанавливаются.
-- Восстановление выполняется через защищённый механизм, после чего FlipDesk перезапускается.
+- Кнопка **«Сохранить сейчас»** создаёт копию. В истории можно выбрать копию и нажать **«Восстановить»** или **«Удалить копию»**. Удаляется только выбранная копия.
+- Копии состояния могут также создаваться автоматически после его изменений. Вводить технический идентификатор копии не требуется.
+- Восстановление требует подтверждения и перезапуска FlipDesk. **Исходные пользовательские файлы Windows при этом не перезаписываются.**
 
-**Полные резервные копии**
+**Full V2 — файлы рабочих столов и настройки**
 
-- **Ежедневная полная резервная копия** создаётся при первом запуске FlipDesk за день, если эта функция включена.
-- FlipDesk хранит последние **7 ежедневных** полных копий.
-- Созданные **вручную** и **страховочные** копии автоматической ротацией ежедневных копий не удаляются.
-- Кнопка **Создать копию** позволяет создать полную резервную копию вручную.
-- Хранилище использует дедупликацию: неизменившиеся файлы повторно не сохраняются, поэтому следующие копии добавляют только новые или изменённые данные.
+- **«Сохранить сейчас»** создаёт ручную копию. Замочек обозначает защиту **от автоматической очистки**, но не запрещает удаление вручную после подтверждения.
+- При включённой настройке ежедневная копия создаётся при наступлении нового дня. Автоматически хранятся **7 последних ежедневных копий**. Кнопка **«Очистка хранилища…»** удаляет лишние ежедневные копии, не затрагивая ручные; невостребованные данные в хранилище очищаются.
+- **«Восстановить»** сначала проверяет копию и показывает число заменяемых, отсутствующих и неизменённых файлов, а также объектов, исключённых по требованиям безопасности. До окончательного подтверждения файлы не меняются.
+- После подтверждения поддерживаемые файлы возвращаются **на исходные пути**, а настройки FlipDesk применяются после перезапуска. Новые файлы, отсутствовавшие в копии, **не удаляются**. Для заменяемых файлов предусмотрено сохранение предыдущих версий для аварийного отката.
+- Автоматическое восстановление разрешено только в защищённой области личного профиля. Файлы **общего рабочего стола (`Public Desktop`)** и другие запрещённые пути могут входить в копию, но при автоматическом восстановлении **пропускаются** с предупреждением.
+- **«Извлечь в папку…»** создаёт **отдельный новый каталог** с файлами, тремя JSON-файлами состояния и картой `original-paths.json`. Данные проверяются при извлечении, исходные файлы рабочего стола не перезаписываются. Так можно вручную получить отдельный файл или объект из `Public Desktop`.
+- В истории Full V2 **нет отдельного режима «Только файлы»** и кнопки прямого восстановления одного файла. Для выборочного получения документов сначала используй извлечение в отдельную папку.
 
-**Восстановление из полной резервной копии**
-
-Из истории полных копий можно восстановить отдельный отсутствующий файл, безопасно разрешить конфликт изменённого файла или восстановить всю выбранную копию.
-
-При восстановлении всей копии доступны два режима:
-
-- **Только файлы** — восстанавливает файлы из выбранной копии, но оставляет текущие настройки и состояние страниц FlipDesk без изменений.
-- **Файлы + состояние** — восстанавливает и файлы, и сохранённое в этой же копии состояние FlipDesk, после чего приложение перезапускается.
-- Лишние текущие файлы, которых нет в выбранной резервной копии, **не удаляются**.
-- Перед восстановлением всей копии FlipDesk автоматически создаёт новую полную **страховочную копию** текущих файлов.
-
-> **Коротко:** для настроек и страниц FlipDesk используй **точку восстановления**; для реальных файлов — **полную резервную копию**; если нужно вернуть и файлы, и FlipDesk к одному предыдущему состоянию — **Файлы + состояние**.
+**Важные ограничения:** расположение значков настоящего рабочего стола Windows Explorer **не восстанавливается** из State V2 или Full V2. Старые архивы V1 не изменяются и не поддерживаются интерфейсом восстановления V2.
 
 </details>
 
