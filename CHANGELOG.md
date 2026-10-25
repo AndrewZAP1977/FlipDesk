@@ -2,6 +2,30 @@
 
 All notable user-facing changes to FlipDesk are documented here.
 
+## [0.1.4]
+
+Maintenance release focused on safer, more transparent backups and recovery.
+
+### Added
+
+- Introduced State V2 snapshots for FlipDesk pages, layouts, and settings, with a dedicated backup history, manual save, selected deletion, and confirmed one-click restore followed by restart. Original Windows documents are not changed by State restore.
+- Introduced Full V2 snapshots of Desktop files and FlipDesk settings, with manual backups, daily backups, separate history, selected deletion, and validated snapshot storage.
+- Added automatic retention of the seven newest daily Full V2 backups. Manual Full backups are excluded from automatic cleanup and require explicit confirmation for deletion.
+- Added Full V2 restore preview showing files to replace, missing files to return, unchanged files, and entries excluded for safety.
+- Added extraction of a selected Full V2 backup into a separate new folder, including an original-path mapping, without overwriting the live Desktop.
+- Added guarded original-path Full V2 restoration with recovery checks and rollback support if a restore is interrupted.
+
+### Fixed
+
+- Shared/Public Desktop items and other restricted destinations are now disclosed and skipped during automatic Full V2 restoration instead of blocking the entire preview; the backup can still be extracted separately.
+- Successful State V2 restoration no longer displays an unnecessary technical success dialog. Failure and rollback warnings remain visible.
+- Improved responsiveness of rectangle selection on virtual pages by caching selection rendering during pointer movement.
+
+### Safety and data handling
+
+- Full V2 recovery does not delete unrelated files that were created after a snapshot.
+- Native Windows Explorer Desktop icon positions are not restored by State V2 or Full V2. Any native-layout capture is diagnostic and read-only.
+- Existing V1 backups are not automatically migrated, restored, or deleted by the V2 workflow.
 ## [0.1.3]
 
 Maintenance release focused on smoother navigation, cleaner reference indicators, and easier transfer from Explorer.
