@@ -2,6 +2,34 @@
 
 All notable user-facing changes to FlipDesk are documented here.
 
+## [0.1.5]
+
+Release focused on reliable Desktop file transfers, restoring native Explorer icon positions, and simpler backup recovery.
+
+### Added
+
+- Full V2 restore now restores saved native Windows Explorer Desktop icon positions together with eligible files and FlipDesk settings in a unified, confirmed operation.
+- If a new icon occupies a saved position, FlipDesk attempts to relocate the occupying icon to a safe available position. Files created after the backup are not deleted.
+- Before a Full V2 restore, FlipDesk creates a protected safety snapshot of the current state. Its label identifies both the safety-copy time and the selected backup's time.
+- Added guarded native-icon placement with verification, durable recovery records, and rollback protection for interrupted or unsuccessful operations.
+
+### Improved
+
+- Backup Center now uses more compact, consistent State V2 and Full V2 windows, with concise confirmations and optional change details.
+- Improved Russian-language messages for restore operations and failure conditions.
+- Improved physical copy and move operations between the real Windows Desktop and FlipDesk pages, including guarded error handling and rollback.
+
+### Fixed
+
+- Page Manager now allows dragging a page to the very beginning or end of the list and preserves the resulting order after reopening.
+- Fixed native Explorer icon position restoration when the saved position is occupied.
+
+### Compatibility and safety
+
+- Full V2 backups created with FlipDesk 0.1.4 remain supported, including the existing daily-backup retention rules.
+- Protected, shared, and unsupported Windows Desktop objects are not overwritten automatically. Skipped backup contents can still be extracted separately.
+- Native Explorer icon placement requires a usable Shell/Desktop configuration. If safe placement cannot be established, FlipDesk stops rather than forcing icon movement or deleting files.
+
 ## [0.1.4]
 
 Maintenance release focused on safer, more transparent backups and recovery.
