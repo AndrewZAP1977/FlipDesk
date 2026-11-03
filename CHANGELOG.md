@@ -29,6 +29,7 @@ Release focused on reliable Desktop file transfers, restoring native Explorer ic
 - Full V2 restore previews now distinguish files already matching the backup from files or folders excluded from automatic restoration.
 - Fixed premature native icon-layout completion when restored Desktop files have not yet appeared in Explorer; FlipDesk rechecks before declaring the layout complete.
 - Fixed clipping of the “What will change?” control in the Full V2 restore confirmation dialog.
+- Simplified the Full V2 restore confirmation: the main view now shows only actual file changes, with matching items, skipped entries and icon-layout notes moved into optional details.
 
 ### Compatibility and safety
 
