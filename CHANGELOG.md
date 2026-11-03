@@ -23,6 +23,7 @@ Release focused on reliable Desktop file transfers, restoring native Explorer ic
 
 - Page Manager now allows dragging a page to the very beginning or end of the list and preserves the resulting order after reopening.
 - Fixed native Explorer icon position restoration when the saved position is occupied.
+- Fixed the Copy/Move dialog layout: both choices now have equal-height cards, and the Cancel button remains fully visible.
 
 ### Compatibility and safety
 
