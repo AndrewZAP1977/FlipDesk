@@ -26,11 +26,12 @@ Release focused on reliable Desktop file transfers, restoring native Explorer ic
 - Fixed the Copy/Move dialog layout: both choices now have equal-height cards, and the Cancel button remains fully visible.
 - Fixed Full V2 restore being blocked when saved Desktop icons or files are no longer present; missing icons no longer prevent file/settings recovery, and native placement is reassessed after restart when needed.
 - Deleting physical files and folders owned by a virtual page now sends them to the Windows Recycle Bin; removing an external reference leaves its original target intact.
+- Full V2 restore previews now distinguish files already matching the backup from files or folders excluded from automatic restoration.
 
 ### Compatibility and safety
 
 - Full V2 backups created with FlipDesk 0.1.4 remain supported, including the existing daily-backup retention rules.
-- Protected, shared, and unsupported Windows Desktop objects are not overwritten automatically. Skipped backup contents can still be extracted separately.
+- Full V2 can restore backed-up Public Desktop files to their original paths where Windows permits access; protected system objects and unsupported destinations remain excluded. Skipped contents can still be extracted separately.
 - Native Explorer icon placement requires a usable Shell/Desktop configuration. If safe placement cannot be established, FlipDesk stops rather than forcing icon movement or deleting files.
 
 ## [0.1.4]
