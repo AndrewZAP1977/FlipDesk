@@ -27,6 +27,8 @@ Release focused on reliable Desktop file transfers, restoring native Explorer ic
 - Fixed Full V2 restore being blocked when saved Desktop icons or files are no longer present; missing icons no longer prevent file/settings recovery, and native placement is reassessed after restart when needed.
 - Deleting physical files and folders owned by a virtual page now sends them to the Windows Recycle Bin; removing an external reference leaves its original target intact.
 - Full V2 restore previews now distinguish files already matching the backup from files or folders excluded from automatic restoration.
+- Fixed premature native icon-layout completion when restored Desktop files have not yet appeared in Explorer; FlipDesk rechecks before declaring the layout complete.
+- Fixed clipping of the “What will change?” control in the Full V2 restore confirmation dialog.
 
 ### Compatibility and safety
 
