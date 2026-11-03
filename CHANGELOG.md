@@ -24,6 +24,8 @@ Release focused on reliable Desktop file transfers, restoring native Explorer ic
 - Page Manager now allows dragging a page to the very beginning or end of the list and preserves the resulting order after reopening.
 - Fixed native Explorer icon position restoration when the saved position is occupied.
 - Fixed the Copy/Move dialog layout: both choices now have equal-height cards, and the Cancel button remains fully visible.
+- Fixed Full V2 restore being blocked when saved Desktop icons or files are no longer present; missing icons no longer prevent file/settings recovery, and native placement is reassessed after restart when needed.
+- Deleting physical files and folders owned by a virtual page now sends them to the Windows Recycle Bin; removing an external reference leaves its original target intact.
 
 ### Compatibility and safety
 
